@@ -18,7 +18,36 @@ public class BoundingBox implements Visitor<Location> {
 	}
 	@Override
 	public Location onGroup(final Group g) {
-		return null;
+		int i = 0;
+		Count h = new Count();
+		int[] xVal = new int[2*(h.onGroup(g).intValue())];
+		int[] yVal = new int[2*(h.onGroup(g).intValue())];
+		for (Shape s : g.getShapes()) {
+			xVal[i] = s.accept(this).getX() ;
+			xVal[i +1] = s.accept(this).getX() + ((Rectangle) s.accept(this).getShape()).getWidth();
+			yVal[i] = s.accept(this).getY();
+			yVal[i +1] = s.accept(this).getY() + ((Rectangle) s.accept(this).getShape()).getHeight();
+			i = i +2;
+		}
+
+		int xMin = xVal[0], xMax = xVal[0];
+		int yMin = yVal[0], yMax = yVal[0];
+		for (int k = 1; k < i; k++) {
+			if (xVal[k] < xMin) {
+				xMin = xVal[k];
+			}
+			if (xVal[k] > xMax) {
+				xMax = xVal[k];
+			}
+			if (yVal[k] < yMin) {
+				yMin = yVal[k];
+			}
+			if (yVal[k] > yMax) {
+				yMax = yVal[k];
+			}
+
+		}
+		return new Location(xMin, yMin, new Rectangle(xMax-xMin, yMax-yMin));
 	}
 
 	@Override
