@@ -44,7 +44,7 @@ public class Count implements Visitor<Integer> {
 
 	@Override
 	public Integer onLocation(final Location l) {
-		return 1;
+		return l.getShape().accept(this);;
 	}
 
 
