@@ -35,32 +35,19 @@ public class Draw implements Visitor<Void> {
 
 	@Override
 	public Void onStrokeColor(final StrokeColor c) {
-		aint.getColor();
+		int color = paint.getColor();
 		paint.setColor(c.getColor());
 		c.getShape().accept(this);
-		if (paint.getColor()==Color.RED){
-			paint.setColor(Color.RED);
-		}else if (paint.getColor()==Color.BLUE) {
-			paint.setColor(Color.BLUE);
-		}else if (paint.getColor()==Color.MAGENTA) {
-			paint.setColor(Color.MAGENTA);
-		}
-		paint.getColor();
+		paint.setColor(color);
 		return null;
 	}
 
 	@Override
 	public Void onFill(final Fill f) {
-		paint.getStyle();
-
-		if(paint.getStyle()== Style.FILL_AND_STROKE) {
-			paint.setStyle(Style.FILL_AND_STROKE);
-		}else{
-			paint.setStyle(Style.STROKE);
-		}
+		Style style = paint.getStyle();
+		paint.setStyle(Style.FILL_AND_STROKE);
 		f.getShape().accept(this);
-		//paint.getStyle();
-		paint.setStyle(Style.FILL);
+		paint.setStyle(style);
 		return null;
 	}
 
@@ -86,11 +73,14 @@ public class Draw implements Visitor<Void> {
 		return null;
 	}
 
-	@Override
 	public Void onOutline(Outline o) {
+		int color = paint.getColor();
+		Style style = paint.getStyle();
+		paint.setColor(color);
 		paint.setStyle(Style.STROKE);
 		o.getShape().accept(this);
-		paint.setColor(Color.BLUE);
+		paint.setColor(color);
+		paint.setStyle(style);
 		return null;
 	}
 
