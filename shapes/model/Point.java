@@ -10,7 +10,7 @@ public class Point extends Location {
 	private static final Shape point = new Circle(0);
 
 	public Point(final int x, final int y) {
-		super(-1, -1, null);
+		super(x, y, point);
 		assert x >= 0;
 		assert y >= 0;
 	}
