@@ -16,39 +16,24 @@ public class BoundingBox implements Visitor<Location> {
 	public Location onFill(final Fill f) {
 		return f.getShape().accept(this);
 	}
-	@Override
-	public Location onGroup(final Group g) {
-		int i = 0;
-		Count h = new Count();
-		int[] xVal = new int[2*(h.onGroup(g).intValue())];
-		int[] yVal = new int[2*(h.onGroup(g).intValue())];
-		for (Shape s : g.getShapes()) {
-			xVal[i] = s.accept(this).getX() ;
-			xVal[i +1] = s.accept(this).getX() + ((Rectangle) s.accept(this).getShape()).getWidth();
-			yVal[i] = s.accept(this).getY();
-			yVal[i +1] = s.accept(this).getY() + ((Rectangle) s.accept(this).getShape()).getHeight();
-			i = i +2;
-		}
+@Override
+public Location onGroup(final Group g) {
+int xl=Integer.MAX_VALUE;
+int xr=Integer.MIN_VALUE;
+int yd=Integer.MAX_VALUE;
+int yu=Integer.MIN_VALUE;
 
-		int xMin = xVal[0], xMax = xVal[0];
-		int yMin = yVal[0], yMax = yVal[0];
-		for (int k = 1; k < i; k++) {
-			if (xVal[k] < xMin) {
-				xMin = xVal[k];
-			}
-			if (xVal[k] > xMax) {
-				xMax = xVal[k];
-			}
-			if (yVal[k] < yMin) {
-				yMin = yVal[k];
-			}
-			if (yVal[k] > yMax) {
-				yMax = yVal[k];
-			}
-
-		}
-		return new Location(xMin, yMin, new Rectangle(xMax-xMin, yMax-yMin));
+for(final Shape s:g.getShapes()){
+	Location z = s.accept(this);
+				
+	xl=Math.min(xl, z.getX());
+	xr=Math.max(xr, z.getX()+((Rectangle) z.getShape()).getWidth());
+	yd=Math.min(yd, z.getY());
+	yu=Math.max(yu, z.getY() + ((Rectangle) z.getShape()).getHeight());
 	}
+	return new Location(xl, yd, new Rectangle (xr-xl, yu-yd));
+	}
+}
 
 	@Override
 	public Location onLocation(final Location l) {
