@@ -87,17 +87,22 @@ public class Draw implements Visitor<Void> {
 	@Override
 	public Void onPolygon(final Polygon s) {
 
-		final float[] pts = new float[(s.getPoints().size()*4)];
+		final float[] pts = new float[(4*s.getPoints().size())];
+		int i = 0;
+		for (Point p: s.getPoints()) {
+			pts[i] = p.getX();
+			pts[i+1] = p.getY();
+			i=i+4;
+		}
+		for (int x=4; x<(4*(s.getPoints().size())); x+=4)
+		{
+			pts[x-2] = pts[x];
+			pts[x-1] = pts[x+1];
+		}
+		pts[4*(s.getPoints().size())-2]=pts[0];
+		pts[4*(s.getPoints().size())-1]=pts[1];
 
-		 int i = 0 ;
-		 for (Point a :s.getPoints()){
-		 pts[i] = a.getX();
-		 pts[i+1] = a.getY();
-		 pts[i+2] = a.getX();
-		 pts[i+3] = a.getY();
-	 }
-
-		 canvas.drawLines(pts, paint);
+		canvas.drawLines(pts, paint);
 		return null;
 	}
 }
