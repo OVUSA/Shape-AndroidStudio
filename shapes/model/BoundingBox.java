@@ -33,7 +33,7 @@ for(final Shape s:g.getShapes()){
 	}
 	return new Location(xl, yd, new Rectangle (xr-xl, yu-yd));
 	}
-}
+
 
 	@Override
 	public Location onLocation(final Location l) {
