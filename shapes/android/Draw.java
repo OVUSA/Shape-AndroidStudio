@@ -15,7 +15,7 @@ import edu.luc.etl.cs313.android.shapes.model.*;
  * A Visitor for drawing a shape to an Android canvas.
  */
 public class Draw implements Visitor<Void> {
-  //TODO entirely your job (except onCircle)
+ 
 
 
 	private final Canvas canvas;
